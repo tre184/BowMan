@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    font-size: 14px;
+    font-family: Nunito,Arial,"Helvetica Neue",Helvetica,sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    /*background-color: #0c0021;*/
+}
+
+.fenetre {
+
+    width: 1128px;
+    height: 660px;
+    margin-top: 100px;
+    display: grid;
+    border: 6px groove rgb(87, 76, 76);
+    border-radius: 2em;
+    background-color: rgb(235, 209, 209);
+    margin-left: 350px;
+
+}
+
+/*#myCanvas {
+    width: 1128px;
+    height: 660px;
+    margin-top: 100px;
+    display: grid;
+    border: 6px groove rgb(87, 76, 76);
+    border-radius: 2em;
+    background-color: white;
+    margin-left: 350px;
+}*/
+
+h1 {
+    font-family: algerian, sans-serif;
+    color: red;
+    font-size: 50px;
+    text-align: center;
+
+}
