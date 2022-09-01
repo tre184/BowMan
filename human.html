@@ -1,46 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BOW MAN</title>
         <link rel="stylesheet" href="menu.css">
     </head>
-    <body>
-        <script>
-            // Create the Canvas //
-            var canvas = document.createElement("canvas");
-            canvas.id = 'canvas';
-            var ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth - 15;
-            canvas.height = windows.innerHeight - 15;
-            document.body.appendChild(canvas);
-            cWidth = canvas.width;
-            cHeight = canvas.height;
-
-            // gravity and stuff //
-            var gravity = 0.4;
-            var groundPoint = cHeight - (cHeight/4);
-
-            /*// drawnBack and firedArrow booleans to assert state of currArrow //
-            var drawnBack = false;
-            var firedArrow = false;*/
-            
-            var drawScene = function() {
-                // inscreased groundPoint so arrows stick where they should in the ground
-                var ground = groundPoint + 15;
-                // sky
-                ctx.fillStyle = "rgba(0,0,200,0.2)";
-                ctx.fillRect(0,0,cWidth,ground);
-                // ground
-                ctx.beginPath();
-                ctx.moveTo(0, ground);
-                ctx.lineTo(cWidth, ground);
-                ctx.strokeStyle = "rgba(0,100,50,0.6)";
-                ctx.stroke();
-                ctx.fillStyle = "rgba(0,200,100,0.6)";
-                ctx.fillRect(0, ground, cWidth, cHeight);
-            }
-        </script>
+    <body onload="render()">
+        <script type="text/javascript" src="js/arrow.js"></script>
+        <script type="text/javascript" src="js/archery.js"></script>
     </body>
 </html>
