@@ -15,26 +15,67 @@ body {
     display: grid;
     border: 6px groove rgb(87, 76, 76);
     border-radius: 2em;
-    background-color: rgb(235, 209, 209);
+    /*background-color: rgb(235, 209, 209);*/
     margin-left: 350px;
+    background-image: url("../Bow man/resources/BOW MAN.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 
 }
 
-/*#myCanvas {
-    width: 1128px;
-    height: 660px;
-    margin-top: 100px;
-    display: grid;
-    border: 6px groove rgb(87, 76, 76);
-    border-radius: 2em;
-    background-color: white;
-    margin-left: 350px;
-}*/
+.humainImage {
+    position: relative;
+    margin-left: 150px;
+    top: 150px;
+}
+.computerImage {
+    position: relative;
+    margin-left: 150px;
+    top: 280px;
+}
+.practiceImage {
+    position: relative;
+    margin-left: 150px;
+    top: 410px;
+}
+.settingImage {
+    position: relative;
+    margin-left: 150px;
+    top: 532px;
+}
 
-h1 {
+p {
     font-family: algerian, sans-serif;
-    color: red;
-    font-size: 50px;
-    text-align: center;
-
+    font-size: 30px;
+    text-align: left;
 }
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+.humain {
+    margin: 0px;
+    position: relative;
+    left: 510px;
+}
+
+.computer {
+    margin: 0px;
+    position: relative;
+    left: 510px;
+}
+
+.practice {
+    margin: 0px;
+    position: relative;
+    left: 510px;
+}
+
+.setting {
+    margin: 0px;
+    position: relative;
+    left: 510px;
+}
+

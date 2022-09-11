@@ -2,86 +2,87 @@
 var arrows = [];
 
 // adjusts arrow speed
-var speedMod = 4;
+var speedMod = 2;
 
-var addArrow = function() {
-  arrows.unshift(new Arrow()); // unshift adds to FRONT of arrows array
+var addArrow = function(player) {
+  arrows.unshift(new Arrow(player));  // unshift adds to FRONT of arrows array
   currArrow = arrows[0];
 }
 
 // Arrow prototype
-function Arrow() {
-  this.x = shootingCirc.x;
-  this.y = shootingCirc.y;
-  this.arrowTipCoords = {
-    x: this.x+20,
-    y: this.y
-  };
-  // left and right parts of the arrow head
-  this.leftTipCoords = {
-    x: this.x+17,
-    y: this.y-3
-  }
-  this.rightTipCoords = {
-    x: this.x+17,
-    y: this.y+3
-  }
-  this.velX = 0;
-  this.velY = 0;
-  this.speed = 0;
-  this.firing = false;
-}
-Arrow.prototype.fireArrow = function() {
-  if (mousePos && !this.firing) {
-    this.speed = Math.min(shootingCirc.r,
-                 distBetween(shootingCirc, mousePos)) / speedMod;
-    this.velX = Math.cos(angleBetween(mousePos, shootingCirc))*this.speed;
-    this.velY = Math.sin(angleBetween(mousePos, shootingCirc))*this.speed;
-    this.firing = true;
-    addArrow();
-  }
-}
-Arrow.prototype.calcTrajectory = function() {
-  if (this.y <= groundPoint && this.firing) {
-    this.velY += gravity;
-    this.x += this.velX;
-    this.y += this.velY;
-  } else {
+class Arrow {
+  constructor(player) {
+    this.x = player.x;
+    this.y = player.y - player.hitbox.hauteur/4;
+    this.angle = 0;
+    this.player = player;
+    
+
+
     this.velX = 0;
     this.velY = 0;
+    this.speed = 0;
     this.firing = false;
   }
-};
-Arrow.prototype.calcArrowHead = function() {
-  if (this.firing) {
-    var angle = Math.atan2(this.velX, this.velY);
-    this.arrowTipCoords.x = this.x + 20*Math.sin(angle);
-    this.arrowTipCoords.y = this.y + 20*Math.cos(angle);
-    var arrowTip = {x:this.arrowTipCoords.x, y:this.arrowTipCoords.y}
-
-    this.leftTipCoords.x = arrowTip.x - 4*Math.sin(angle-Math.PI/4);
-    this.leftTipCoords.y = arrowTip.y - 4*Math.cos(angle-Math.PI/4);
-    this.rightTipCoords.x = arrowTip.x - 4*Math.sin(angle+Math.PI/4);
-    this.rightTipCoords.y = arrowTip.y - 4*Math.cos(angle+Math.PI/4);
+  fireArrow(player) {
+    if (mousePos && !this.firing) {
+      this.speed = Math.min(player.shootingCirc.r,
+        distBetween(player.shootingCirc, mousePos)) / speedMod;
+      this.velX = Math.cos(angleBetween(mousePos, player.shootingCirc)) * this.speed;
+      this.velY = Math.sin(angleBetween(mousePos, player.shootingCirc)) * this.speed;
+      this.firing = true;
+    }
   }
-};
-Arrow.prototype.drawArrow = function() {
-  this.calcTrajectory();
-  this.calcArrowHead();
-  var arrowTip = this.arrowTipCoords;
-  var leftTip = this.leftTipCoords;
-  var rightTip = this.rightTipCoords;
+  calcTrajectory() {
+    // On ajoute le cas où le joueur adverse a été touché
+    if (this.y <= groundPoint && !this.detectCollision() && this.firing) {
+      this.velY += gravity;
+      this.x += this.velX;
+      this.y += this.velY;
+      let collision = this.detectCollision();
+      this.player.setCollision(collision);
+    } else {
+      this.velX = 0;
+      this.velY = 0;
+      this.firing = false;
+    }
+  }
+  calcArrowHead() {
+    if (this.firing) {
+      this.angle = Math.atan2(this.velY, this.velX);
+    }
+  }
 
-  ctx.beginPath();
-  ctx.moveTo(this.x, this.y);
-  ctx.lineTo(arrowTip.x, arrowTip.y);
+  setPicture(picture) {
+    this.picture.src = picture;
+  }
 
-  ctx.moveTo(arrowTip.x, arrowTip.y);
-  ctx.lineTo(leftTip.x, leftTip.y);
+  drawArrow() {
+    this.calcTrajectory();
+    this.calcArrowHead();
 
-  ctx.moveTo(arrowTip.x, arrowTip.y);
-  ctx.lineTo(rightTip.x, rightTip.y);
 
-  ctx.strokeStyle = "black";
-  ctx.stroke();
-};
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.drawImage(this.player.getPicture(), 0, -5, 50, 10);
+    ctx.restore();
+  }
+
+  // Permet de détecter si la flèche touche le joueur adverse
+  detectCollision() {
+    if (Math.abs(this.x - this.player.target.x) < this.player.target.hitbox.largeur/2
+        && Math.abs(this.y - this.player.target.y) < this.player.target.hitbox.hauteur/2
+        && this.firing) {
+      // On renvoie true s'il y a collision (condition supplémentaire sur le fait que la flèche soit lancée,
+      // on ne la prend plus en compte une fois qu'elle s'est plantée sur le joueur adverse)
+      // TODO : appeler une méthode via l'objet this.player.target pour que ce dernier perde de la vie
+      //console.log("Collision détectée");
+      return true;
+    }
+    return false;
+  }
+
+}
+
+

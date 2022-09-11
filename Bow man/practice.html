@@ -1,22 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BOW MAN</title>
         <link rel="stylesheet" href="menu.css">
     </head>
-    <body>
-        <canvas id="myCanvas" with="1128px" height= "660px;"></canvas>
-        <script>
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth - 15;
-            canvas.height = windows.innerHeight - 15;
-            document.fenetre.appendChild(canvas);
-            cWidth = canvas.width;
-            cHeight = canvas.height;
-            
-        </script>
+    <body onload="render()">
+        <button type="button" ondblclick="close()" style="z-index:2; position:absolute; top:x; left:y" value="1">Restart</button>
+        <script type="text/javascript" src="js/arrow.js"></script>
+        <script type="text/javascript" src="js/player.js"></script>
+        <script type="text/javascript" src="js/cible.js"></script>
+        <script type="text/javascript" src="js/archeryPRACT.js"></script>
     </body>
 </html>

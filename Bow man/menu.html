@@ -8,20 +8,66 @@
     </head>
     <body>
         <div class="fenetre">
-            <h1><span>Bow man</span></h1>
-            <img class="fleche" src="fleche.png" alt="fleche">
+            <img id="fleche" src="fleche.png" alt="fleche">
             <div class="humain">
-                <p><a href="human.html">VS Human</a></p>
+                <p><a id="hu" href="human.html">VS Human</a></p>
             </div>
             <div class="computer">
-                <p><a href="computer.html">VS Computer</a></p>
+                <p><a id="co" href="computer.html">VS Computer</a></p>
             </div>
             <div class="practice">
-                <p><a href="pratice.html">Practice</a></p>
+                <p><a id="pra" href="pratice.html">Practice</a></p>
             </div>
             <div class="setting">
-                <p><a href="setting.htlm">Setting</a></p>
+                <p><a id="set" href="setting.htlm">Setting</a></p>
             </div>
         </div>
+        <script>
+            document.getElementById("hu").onmouseover = function() {hum()};
+            document.getElementById("hu").onmouseout = function() {hum1()};
+            document.getElementById("co").onmouseover = function() {com()};
+            document.getElementById("co").onmouseout = function() {com1()};
+            document.getElementById("pra").onmouseover = function() {prat()};
+            document.getElementById("pra").onmouseout = function() {prat1()};
+            document.getElementById("set").onmouseover = function() {sett()};
+            document.getElementById("set").onmouseout = function() {sett1()};
+            const img = document.getElementById("fleche")
+
+            function hum() {
+                document.getElementById("hu").style.color = "red";
+                img.classList.add ("humainImage");
+            }
+
+            function hum1() {
+                document.getElementById("hu").style.color = "white";
+            
+            }
+            function com() {
+                document.getElementById("co").style.color = "red";
+                img.classList.add ("computerImage");
+            }
+
+            function com1() {
+                document.getElementById("co").style.color = "white";
+            }
+            function prat() {
+                document.getElementById("pra").style.color = "red";
+                img.classList.add ("practiceImage");
+            }
+
+            function prat1() {
+                document.getElementById("pra").style.color = "white";
+            }
+            function sett() {
+                document.getElementById("set").style.color = "red";
+                img.classList.add ("settingImage");
+            }
+
+            function sett1() {
+                document.getElementById("set").style.color = "white";
+            }
+        
+            
+        </script>
     </body>
 </html>

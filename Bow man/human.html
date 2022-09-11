@@ -6,8 +6,10 @@
         <title>BOW MAN</title>
         <link rel="stylesheet" href="menu.css">
     </head>
-    <body onload="drawScene(); drawCircles();">
+    <body onload="render()">
+        <button type="button" ondblclick="close()" style="z-index:2; position:absolute; top:x; left:y" value="1">Restart</button>
         <script type="text/javascript" src="js/arrow.js"></script>
+        <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/archery.js"></script>
     </body>
 </html>

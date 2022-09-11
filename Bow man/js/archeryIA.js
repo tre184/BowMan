@@ -111,12 +111,10 @@ var getAimCoors = function (mousePos) {
 }  
 
 var player1 = new Player('Tresor', 200, groundPoint - 90, 'resources/player.png', 'resources/playerArcher.png', 'resources/arrow.png');
-var player2 = new Player('John', 500, groundPoint - 90, 'resources/player-Copie.png', 'resources/playerArcher-Copie.png', 'resources/arrow-Copie.png');
-
+var player2 = new PlayerIA('resources/player-Copie.png', 'resources/playerArcher-Copie.png', 'resources/arrow-Copie.png');
 // On définit les oppositions :
 player1.setTarget(player2);
 player2.setTarget(player1);
-
 
 var playerList = [player1, player2];
 var playerTurn = 0; 
@@ -191,17 +189,20 @@ playerList[playerTurn].isPlaying = true;
     }
     // Défilement vertical pour commencer
     ctx.translate(0, -paddingY);
-    drawScene();
+      drawScene();
+      if (player2.isPlaying) {
+          player2.shootArrow(playerList, playerTurn);
+      }
     // Défilement horizontal par la suite
     ctx.translate(-paddingX, 0);
     // On dessine le joueur :
     for (player of playerList) {
-      player.drawPlayer();
+        player.drawPlayer();
+        
     }
     
     for(i=0; i<arrows.length; i++) {
       arrows[i].drawArrow();
-      //arrows[i].drawArrow1();
     }
     if (arrows.length > 0) {
       paddingX += currArrow.velX;
@@ -211,13 +212,6 @@ playerList[playerTurn].isPlaying = true;
         // paddingY += ((playerList[playerTurn].y - 500) - paddingY) / 20;
         paddingY += ((playerList[playerTurn].y - groundPoint + 90) - paddingY) / 20;
       }
-    }
-    //Fin partie
-    for (player[playerTurn] of playerList) {
-      if (player.isPlayerDead) {
-        player.endgame();
-      }
-      
     }
 
     ctx.restore();

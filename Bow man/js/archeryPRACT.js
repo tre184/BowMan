@@ -44,22 +44,22 @@
   addEventListener("mousemove", function (evt) {
     mousePos = getMousePos(canvas, evt); 
       if (mouseDown) {
-        currArrow.angle = angleBetween(mousePos, playerList[playerTurn].shootingCirc);
-        var power = Math.min(playerList[playerTurn].shootingCirc.r,
-          distBetween(playerList[playerTurn].shootingCirc, mousePos)) / 3;
-        currArrow.x = (playerList[playerTurn].x) + (60 - power) * Math.cos(currArrow.angle);
-        currArrow.y = (playerList[playerTurn].y - playerList[playerTurn].hitbox.hauteur/4) + (60 - power) * Math.sin(currArrow.angle);
+        currArrow.angle = angleBetween(mousePos, player1.shootingCirc);
+        var power = Math.min(player1.shootingCirc.r,
+          distBetween(player1.shootingCirc, mousePos)) / 3;
+        currArrow.x = (player1.x) + (60 - power) * Math.cos(currArrow.angle);
+        currArrow.y = (player1.y - player1.hitbox.hauteur/4) + (60 - power) * Math.sin(currArrow.angle);
       }
 }, false);
   // Mouse down //
   addEventListener("mousedown", function (evt) {
     mousePos = getMousePos(canvas, evt); 
     if (mouseUp) {
-      addArrow(playerList[playerTurn]);
-      playerList[playerTurn].shootingCirc.x = mousePos.x;
-      playerList[playerTurn].shootingCirc.y = mousePos.y;
+      addArrow(player1);
+      player1.shootingCirc.x = mousePos.x;
+      player1.shootingCirc.y = mousePos.y;
       // Le joueur en cours commence à jouer
-      playerList[playerTurn].isPlaying = true;
+      player1.isPlaying = true;
     }
     mouseDown = true;
     mouseUp = false;
@@ -68,10 +68,7 @@
   addEventListener("mouseup", function (evt) {
     mousePos = getMousePos(canvas, evt); 
     if (mouseDown) {
-      currArrow.fireArrow(playerList[playerTurn]);
-      // On change de joueur
-      playerList[playerTurn].isPlaying = false;
-      playerTurn = 1 - playerTurn;
+      currArrow.fireArrow(player1);
     }
       mouseUp = true;
       mouseDown = false;
@@ -111,17 +108,10 @@ var getAimCoors = function (mousePos) {
 }  
 
 var player1 = new Player('Tresor', 200, groundPoint - 90, 'resources/player.png', 'resources/playerArcher.png', 'resources/arrow.png');
-var player2 = new Player('John', 500, groundPoint - 90, 'resources/player-Copie.png', 'resources/playerArcher-Copie.png', 'resources/arrow-Copie.png');
+var cible = new Cible(500, groundPoint - 90);
 
 // On définit les oppositions :
-player1.setTarget(player2);
-player2.setTarget(player1);
-
-
-var playerList = [player1, player2];
-var playerTurn = 0; 
-playerList[playerTurn].isPlaying = true;
-
+player1.setTarget(cible);
 
   var isFiredArrow = function() {
     if (mousePos && drawnBack && mouseUp) {
@@ -131,7 +121,7 @@ playerList[playerTurn].isPlaying = true;
   }
   
   var isDrawnBack = function() {
-    if (mousePos && playerList[playerTurn].isInCircle(mousePos)) {
+    if (mousePos && player1.isInCircle(mousePos)) {
       if (mouseDown) drawnBack = true;
       else if (mouseUp) drawnBack = false;
     }
@@ -151,21 +141,6 @@ playerList[playerTurn].isPlaying = true;
     ctx.fillText("Angle: " + angleBetween(mousePos, shootingCirc), 20, 60);
 }
   
-  //Afficher le niveau de vie
- var displayHealth = function (player1, player2) {
-
-     ctx.font = "15px Helvetica";
-     ctx.textAlign = "left";
-     ctx.textBaseline = "top";
-     ctx.fillStyle = "red";
-     ctx.fillText(player1.nom + " Point de vie: " + player1.health, player1.x, 20);
-   ctx.fillText(player2.nom + " Point de vie: " + player2.health, player1.x, 50);
-   
- }
-
-  
-  
-  
   // UPDATE //
   var update = function() {
     isDrawnBack();
@@ -184,10 +159,9 @@ playerList[playerTurn].isPlaying = true;
     update();
     ctx.save();
     drawSky();
-    displayHealth(player1, player2);
     // Problème de défilement lié au viseur contourné en ne dessinant qu'au moment de tirer à l'arc
     if (mouseDown) {
-      playerList[playerTurn].drawCircles();
+        player1.drawCircles();
     }
     // Défilement vertical pour commencer
     ctx.translate(0, -paddingY);
@@ -195,9 +169,9 @@ playerList[playerTurn].isPlaying = true;
     // Défilement horizontal par la suite
     ctx.translate(-paddingX, 0);
     // On dessine le joueur :
-    for (player of playerList) {
-      player.drawPlayer();
-    }
+
+      player1.drawPlayer();
+      cible.drawCible();
     
     for(i=0; i<arrows.length; i++) {
       arrows[i].drawArrow();
@@ -207,17 +181,10 @@ playerList[playerTurn].isPlaying = true;
       paddingX += currArrow.velX;
       paddingY += currArrow.velY;
       if (!currArrow.firing && Math.abs(paddingX) > 0) {
-        paddingX += ((playerList[playerTurn].x - cWidth/2) - paddingX) / 20;
+        paddingX += ((player1.x - cWidth/2) - paddingX) / 20;
         // paddingY += ((playerList[playerTurn].y - 500) - paddingY) / 20;
-        paddingY += ((playerList[playerTurn].y - groundPoint + 90) - paddingY) / 20;
+        paddingY += ((player1.y - groundPoint + 90) - paddingY) / 20;
       }
-    }
-    //Fin partie
-    for (player[playerTurn] of playerList) {
-      if (player.isPlayerDead) {
-        player.endgame();
-      }
-      
     }
 
     ctx.restore();
